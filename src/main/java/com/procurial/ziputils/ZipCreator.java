@@ -1,8 +1,13 @@
 package com.procurial.ziputils;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import com.procurial.gui.GUIStarter;
 
@@ -92,5 +97,54 @@ public class ZipCreator {
             bos.write(bytesIn, 0, read);
         }
         bos.close();
+    }
+
+    public static void zipDirectoryTo(String sourceDirPath, String zipFilePath) throws IOException {
+        File sourceDir = new File(sourceDirPath);
+        if (!sourceDir.exists() || !sourceDir.isDirectory()) {
+            throw new IOException("Source path is not a valid directory: " + sourceDirPath);
+        }
+
+        try (FileOutputStream fos = new FileOutputStream(zipFilePath);
+            ZipOutputStream zos = new ZipOutputStream(fos)) {
+
+            File[] files = sourceDir.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    zipFile(file, file.getName(), zos);
+                }
+            }
+        }
+    }
+
+    private static void zipFile(File fileToZip, String fileName, ZipOutputStream zos) throws IOException {
+        if (fileToZip.isHidden()) {
+            return;
+        }
+
+        if (fileToZip.isDirectory()) {
+            String entryName = fileName.endsWith("/") ? fileName : fileName + "/";
+            zos.putNextEntry(new ZipEntry(entryName));
+            zos.closeEntry();
+
+            File[] children = fileToZip.listFiles();
+            if (children != null) {
+                for (File childFile : children) {
+                    zipFile(childFile, fileName + "/" + childFile.getName(), zos);
+                }
+            }
+        } else {
+            try (FileInputStream fis = new FileInputStream(fileToZip)) {
+                ZipEntry zipEntry = new ZipEntry(fileName);
+                zos.putNextEntry(zipEntry);
+
+                byte[] bytes = new byte[BUFFER_SIZE];
+                int length;
+                while ((length = fis.read(bytes)) >= 0) {
+                    zos.write(bytes, 0, length);
+                }
+                zos.closeEntry();
+            }
+        }
     }
 }

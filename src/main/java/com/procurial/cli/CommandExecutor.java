@@ -1,18 +1,21 @@
 package com.procurial.cli;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import com.procurial.core.ContestInstance;
-import com.procurial.core.DefaultProblem;
 import com.procurial.utils.Cleaner;
 import com.procurial.ziputils.ZipCreator;
 
 import edu.csus.ecs.pc2.core.model.ClientType;
 import edu.csus.ecs.pc2.core.security.FileSecurityException;
-
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class CommandExecutor {
     ContestInstance contest;
@@ -65,6 +68,7 @@ public class CommandExecutor {
             System.out.println("new <contest folder destination> <contest password> : Creates a new contest folder.");
             System.out.println("add <property> {arguments} : Adds different stuff to the competition.");
             System.out.println("setupWti <contest directory> <scoreboard1 account password> : sets up the wti system");
+            System.out.println("sampleData <contest directory> <sampledata folder> : copies the sample data into a hostable zip");
             System.out.println("properties: account, problem");
             System.out.println("\taccount arguments -> <type>");
             System.out.println("\t\taccount types: JUDGE, ADMINISTRATOR, TEAM, SCOREBOARD");
@@ -135,7 +139,6 @@ public class CommandExecutor {
                         ZipCreator.unzipFileTo(existing.getAbsolutePath(), dir.getAbsolutePath() + File.separator + "projects");
 
                         Path path = Paths.get(dir.getAbsolutePath(), "projects", "WebTeamInterface-1.1", "pc2v9.ini");
-                        System.out.println(path);
                         String content = Files.readString(path, StandardCharsets.UTF_8);
                         content = content.replace("wtiscoreboardaccount=scoreboard2", "wtiscoreboardaccount=scoreboard1");
                         content = content.replace("wtiscoreboardpassword=scoreboard2", "wtiscoreboardpassword=" + args[2]);
@@ -143,6 +146,23 @@ public class CommandExecutor {
                         Files.writeString(path, content, StandardCharsets.UTF_8);
                     } catch (IOException e) {
                         System.out.println("There was an error while trying to unzip.");
+                        e.printStackTrace();
+                    }
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Not enough arguments - missing contest directory or scoreboard account password.");
+            }
+        } else if (command.equals("sampleData")) {
+            try {
+                File dir = new File(args[1]);
+                if (dir.exists())
+                    try {
+                        File sdDir = new File(dir.getAbsolutePath() + File.separator + "sampleDataServer");
+                        if (!sdDir.exists()) {
+                            sdDir.mkdirs();
+                        }
+                        ZipCreator.zipDirectoryTo(args[2], sdDir.getAbsolutePath() + File.separator + "sampledata.zip");
+                    } catch (IOException e) {
+                        System.out.println("There was an error while trying to zip the sample data.");
                         e.printStackTrace();
                     }
             } catch (IndexOutOfBoundsException e) {
