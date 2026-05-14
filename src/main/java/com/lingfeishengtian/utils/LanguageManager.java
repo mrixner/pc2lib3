@@ -14,20 +14,34 @@ public class LanguageManager {
         this.controller = controller;
     }
 
+    /* Default languages for pc2 9.10.0:
+        - Default
+        - Java
+        - GNU C++ (Unix / Windows)
+        - GNU C (Unix / Windows)
+        - Mono C#
+        - Microsoft C#
+        - Perl
+        - PHP
+        - Python
+        - Python 3
+        - Ruby
+        - Microsoft C++
+        - Kylix Delphi
+        - Kylix C++
+        - Free Pascal
+        - Kotlin (Windows)
+        - Kotlin (Linux/MacOS)
+    */
+
     public void loadDefaultLanguages(){
         if ((this.contest.getLanguages()).length == 0) {
-            Language language = createLanguage("Java");
-            if (language != null)
-                this.controller.addNewLanguage(language);
-            System.out.println("quickLoad: add " + language);
-            language = createLanguage("GNU C++ (Unix / Windows)");
-            if (language != null)
-                this.controller.addNewLanguage(language);
-            System.out.println("quickLoad: add " + language);
-            language = createLanguage("Perl");
-            if (language != null)
-                this.controller.addNewLanguage(language);
-            System.out.println("quickLoad: add " + language);
+            for (String name : new String[]{"Java", "GNU C++ (Unix / Windows)", "GNU C (Unix / Windows)", "Python 3"}) {
+                Language language = createLanguage(name);
+                if (language != null)
+                    this.controller.addNewLanguage(language);
+                System.out.println("quickLoad: add " + language);
+            }
         }
     }
 
@@ -35,6 +49,7 @@ public class LanguageManager {
         byte b;
         int i;
         String[] arrayOfString;
+        System.out.println("================");
         for (i = (arrayOfString = LanguageAutoFill.getLanguageList()).length, b = 0; b < i; ) {
             String langName = arrayOfString[b];
             if (langName.equals(languageName)) {
