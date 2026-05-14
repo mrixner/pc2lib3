@@ -1,9 +1,9 @@
-package com.lingfeishengtian.core;
+package com.procurial.core;
 
 import java.io.File;
 import java.io.IOException;
 
-import com.lingfeishengtian.utils.FileUtils;
+import com.procurial.utils.FileUtils;
 
 import edu.csus.ecs.pc2.core.model.Problem;
 import edu.csus.ecs.pc2.core.model.ProblemDataFiles;

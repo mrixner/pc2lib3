@@ -1,7 +1,7 @@
-import com.lingfeishengtian.core.ContestInstance;
-import com.lingfeishengtian.core.DefaultProblem;
-import com.lingfeishengtian.core.ProblemException;
-import com.lingfeishengtian.ziputils.ZipCreator;
+import com.procurial.core.ContestInstance;
+import com.procurial.core.DefaultProblem;
+import com.procurial.core.ProblemException;
+import com.procurial.ziputils.ZipCreator;
 import edu.csus.ecs.pc2.core.security.FileSecurityException;
 
 import java.io.File;

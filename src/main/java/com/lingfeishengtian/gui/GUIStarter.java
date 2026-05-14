@@ -1,7 +1,7 @@
-package com.lingfeishengtian.gui;
+package com.procurial.gui;
 
-import com.lingfeishengtian.cli.CommandExecutor;
-import com.lingfeishengtian.gui.utils.Console;
+import com.procurial.cli.CommandExecutor;
+import com.procurial.gui.utils.Console;
 import edu.csus.ecs.pc2.core.security.FileSecurityException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;

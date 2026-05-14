@@ -1,4 +1,4 @@
-package com.lingfeishengtian.cli;
+package com.procurial.cli;
 
 import java.util.Scanner;
 

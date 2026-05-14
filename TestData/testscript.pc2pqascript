@@ -1,5 +1,5 @@
 new /Users/hunterhan/Downloads chscompsci
-add problem /Users/hunterhan/Documents/Github/pc2lib2/TestData /Users/hunterhan/Documents/Github/pc2lib2/TestData/problemlist.txt
+add problem /Users/hunterhan/Documents/Github/pc2lib3/TestData /Users/hunterhan/Documents/Github/pc2lib3/TestData/problemlist.txt
 setDefaultContest
 save
 exit

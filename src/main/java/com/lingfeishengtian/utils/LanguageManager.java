@@ -1,4 +1,4 @@
-package com.lingfeishengtian.utils;
+package com.procurial.utils;
 
 import edu.csus.ecs.pc2.core.InternalController;
 import edu.csus.ecs.pc2.core.model.InternalContest;

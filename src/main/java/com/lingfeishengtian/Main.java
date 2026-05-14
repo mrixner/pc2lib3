@@ -1,5 +1,5 @@
-package com.lingfeishengtian;
-import com.lingfeishengtian.gui.GUIStarter;
+package com.procurial;
+import com.procurial.gui.GUIStarter;
 
 public class Main {
     public static void main(String[] args) {

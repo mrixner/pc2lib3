@@ -15,37 +15,37 @@
             "name": "Launch TestProblemSolution",
             "request": "launch",
             "mainClass": "TestProblemSolution",
-            "projectName": "pc2lib2"
+            "projectName": "pc2lib3"
         },
         {
             "type": "java",
             "name": "Launch Tests",
             "request": "launch",
             "mainClass": "Tests",
-            "projectName": "pc2lib2"
+            "projectName": "pc2lib3"
         },
         {
             "type": "java",
             "name": "Launch Main",
             "request": "launch",
-            "mainClass": "com.lingfeishengtian.Main",
-            "projectName": "pc2lib2",
+            "mainClass": "com.procurial.Main",
+            "projectName": "pc2lib3",
             "vmArgs": "-Djdk.crypto.KeyAgreement.legacyKDF=true"
         },
         {
             "type": "java",
             "name": "Launch CLIStarter",
             "request": "launch",
-            "mainClass": "com.lingfeishengtian.cli.CLIStarter",
-            "projectName": "pc2lib2",
+            "mainClass": "com.procurial.cli.CLIStarter",
+            "projectName": "pc2lib3",
             "vmArgs": "-Djdk.crypto.KeyAgreement.legacyKDF=true"
         },
         {
             "type": "java",
             "name": "Launch GUIStarter",
             "request": "launch",
-            "mainClass": "com.lingfeishengtian.gui.GUIStarter",
-            "projectName": "pc2lib2",
+            "mainClass": "com.procurial.gui.GUIStarter",
+            "projectName": "pc2lib3",
             "vmArgs": "-Djdk.crypto.KeyAgreement.legacyKDF=true --module-path $PATH_TO_FX --add-modules javafx.controls,javafx.fxml"
         }
     ]

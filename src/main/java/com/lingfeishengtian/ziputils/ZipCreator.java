@@ -1,10 +1,10 @@
-package com.lingfeishengtian.ziputils;
+package com.procurial.ziputils;
 
 import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import com.lingfeishengtian.gui.GUIStarter;
+import com.procurial.gui.GUIStarter;
 
 public class ZipCreator {
     private static final int BUFFER_SIZE = 4096;

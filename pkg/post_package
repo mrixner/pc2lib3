@@ -1,5 +1,5 @@
-mkdir pc2lib2
-cp start_pc2lib2 pc2lib2
-cp start_pc2lib2.bat pc2lib2
-cp ../target/pc2lib2-1.0-SNAPSHOT.jar pc2lib2/pc2lib2.jar
-zip -r pc2lib2.zip pc2lib2
+mkdir pc2lib3
+cp start_pc2lib3 pc2lib3
+cp start_pc2lib3.bat pc2lib3
+cp ../target/pc2lib3-1.0-SNAPSHOT.jar pc2lib3/pc2lib3.jar
+zip -r pc2lib3.zip pc2lib3

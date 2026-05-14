@@ -1,7 +1,7 @@
-package com.lingfeishengtian.core;
+package com.procurial.core;
 
-import com.lingfeishengtian.utils.FileUtils;
-import com.lingfeishengtian.utils.ProfileUtils;
+import com.procurial.utils.FileUtils;
+import com.procurial.utils.ProfileUtils;
 import edu.csus.ecs.pc2.core.InternalController;
 import edu.csus.ecs.pc2.core.list.AccountComparator;
 import edu.csus.ecs.pc2.core.log.Log;
@@ -15,6 +15,7 @@ import java.util.*;
 import java.security.SecureRandom;
 
 public class ContestInstance {
+
     private InternalController controller;
     private InternalContest contest;
     private String rootPath;
@@ -31,22 +32,21 @@ public class ContestInstance {
     /**
      * Initializes contest instance and stores the competition data.
      * <p>
-     * If useExistingProfileFromProfilesProperties is true, then it'll attempt to
-     * search for the existing profiles. If one doesn't exist, it'll create a new
-     * one. If useExistingProfileFromProfilesProperties is false, then it'll always
-     * create a new profile.
+     * If useExistingProfileFromProfilesProperties is true, then it'll attempt
+     * to search for the existing profiles. If one doesn't exist, it'll create a
+     * new one. If useExistingProfileFromProfilesProperties is false, then it'll
+     * always create a new profile.
      *
      * @param binPath
      * @param useExistingProfileFromProfilesProperties
      * @param contestPasscode
      */
-
     public ContestInstance(String binPath, boolean useExistingProfileFromProfilesProperties, String contestPasscode) {
         contest = new InternalContest();
         contest.setContestPassword(contestPasscode);
 
-        mainLog = new Log(binPath + File.separator + "logs", "pc2lib2");
-        StaticLog.setLog(new Log(binPath + File.separator + "logs", "pc2lib2staticLog"));
+        mainLog = new Log(binPath + File.separator + "logs", "pc2lib3");
+        StaticLog.setLog(new Log(binPath + File.separator + "logs", "pc2lib3staticLog"));
 
         controller = new InternalController(contest);
         controller.setHaltOnFatalError(false);
@@ -61,7 +61,7 @@ public class ContestInstance {
         contest.getContestInformation().setJudgeCDPBasePath(rootPath + File.separator + "problemData");
 
         profileUtils = new ProfileUtils(binPath, useExistingProfileFromProfilesProperties, contestPasscode, controller,
-            contest);
+                contest);
 
         Profile f = profileUtils.getCurrentProfile();
         pPath = f.getProfilePath();
@@ -69,8 +69,6 @@ public class ContestInstance {
         contest.setProfile(f);
         controller.setTheProfile(f);
     }
-
-
 
     /**
      * Initializes the server and exposes internal API to allow modification.
@@ -106,11 +104,10 @@ public class ContestInstance {
     /**
      * Retrieves contest information and then sets values.
      *
-     * @param pointsForYes    How many points are given for a correct answer.
-     * @param pointsForNo     How many points are counted off for a wrong answer.
-     * @param pointsPerMinute How many points are given for minutes after timer and
-     *                        problem solved. (Predicted I actually have no idea
-     *                        what this means)
+     * @param pointsForYes How many points are given for a correct answer.
+     * @param pointsForNo How many points are counted off for a wrong answer.
+     * @param pointsPerMinute How many points are given for minutes after timer
+     * and problem solved. (Predicted I actually have no idea what this means)
      */
     public void setScoringProperties(int pointsForYes, int pointsForNo, int pointsPerMinute) {
         ContestInformation contestInformation = contest.getContestInformation();
@@ -127,7 +124,7 @@ public class ContestInstance {
     public void addProblem(DefaultProblem problem) {
         ProblemDataFiles dataFiles = problem.generateDataFiles();
         contest.addProblem(problem.getProblem(), dataFiles);
-        
+
         String problemDataDir = rootPath + File.separator + "problemData" + File.separator + problem.getTestCaseName();
         FileUtils.mkdirs(new File(problemDataDir));
 
@@ -199,22 +196,23 @@ public class ContestInstance {
 
     private void checkAndGenerate(ClientType.Type type) {
         int existingAmtOfAcc = getAccountsOfType(type).size();
-        if (getDefaultFrom(type) > existingAmtOfAcc)
+        if (getDefaultFrom(type) > existingAmtOfAcc) {
             contest.generateNewAccounts(String.valueOf(type), getDefaultFrom(type) - existingAmtOfAcc, true);
+        }
     }
 
     private int getDefaultFrom(ClientType.Type type) {
         switch (type) {
-        case TEAM:
-            return DEFAULT_TEAMS;
-        case ADMINISTRATOR:
-            return DEFAULT_ADMINISTRATORS;
-        case JUDGE:
-            return DEFAULT_JUDGES;
-        case SCOREBOARD:
-            return DEFAULT_SCOREBOARDS;
-        default:
-            return 0;
+            case TEAM:
+                return DEFAULT_TEAMS;
+            case ADMINISTRATOR:
+                return DEFAULT_ADMINISTRATORS;
+            case JUDGE:
+                return DEFAULT_JUDGES;
+            case SCOREBOARD:
+                return DEFAULT_SCOREBOARDS;
+            default:
+                return 0;
         }
     }
 
@@ -255,7 +253,7 @@ public class ContestInstance {
     }
 
     public void bulkAddProblems(File testCases, File problemList) {
-        if(problemList == null) {
+        if (problemList == null) {
             System.out.println("No problem list.");
             return;
         }
@@ -279,25 +277,26 @@ public class ContestInstance {
                             File[] inouts = f.listFiles();
                             Arrays.sort(inouts);
 
-                            for(File inout : inouts){
-                                if(!inout.getName().startsWith(".")){
+                            for (File inout : inouts) {
+                                if (!inout.getName().startsWith(".")) {
                                     String inoutName = getFileNameWithoutExtension(inout);
-                                    if(testCaseFiles.get(inoutName) == null) {
+                                    if (testCaseFiles.get(inoutName) == null) {
                                         testCaseFiles.put(inoutName, new InOutPair());
                                         testCaseFiles.get(inoutName).put(inout);
-                                    }else{
+                                    } else {
                                         testCaseFiles.get(inoutName).put(inout);
                                     }
                                 }
                             }
-                        }else{
-                            if(!f.getName().startsWith(".")){
+                        } else {
+                            if (!f.getName().startsWith(".")) {
                                 String inoutName = getFileNameWithoutExtension(f);
-                                if(testCaseFiles.get(inoutName) == null) {
+                                if (testCaseFiles.get(inoutName) == null) {
                                     testCaseFiles.put(inoutName, new InOutPair());
                                     testCaseFiles.get(inoutName).put(f);
-                                } else
+                                } else {
                                     testCaseFiles.get(inoutName).put(f);
+                                }
                             }
                         }
                     }
@@ -334,13 +333,15 @@ public class ContestInstance {
     }
 
     private class InOutPair {
+
         public File infile, outfile;
 
         public void put(File x) {
-            if (x.getName().endsWith(".dat") || x.getName().endsWith(".in"))
-                infile = x;
-            else if (x.getName().endsWith(".out") || x.getName().endsWith(".ans"))
+            if (x.getName().endsWith(".dat") || x.getName().endsWith(".in")) {
+                infile = x; 
+            }else if (x.getName().endsWith(".out") || x.getName().endsWith(".ans")) {
                 outfile = x;
+            }
         }
     }
 
@@ -351,14 +352,16 @@ public class ContestInstance {
         } catch (IOException iOException) {
             throw new FileNotFoundException(file.getAbsolutePath());
         }
-        if (lines.length < 1)
+        if (lines.length < 1) {
             throw new FileNotFoundException(file.getAbsolutePath());
+        }
         int numberOfPasswords = lines.length;
         Vector<Account> accounts = contest.getAccounts(ClientType.Type.TEAM, contest.getSiteNumber());
         int numberOfTeams = accounts.size();
-        if (numberOfPasswords > numberOfTeams)
+        if (numberOfPasswords > numberOfTeams) {
             throw new Exception(
                     "Too few accounts, expecting " + numberOfPasswords + " accounts, found " + numberOfTeams);
+        }
         Account[] teams = accounts.toArray(new Account[accounts.size()]);
         Arrays.sort(teams, new AccountComparator());
         ArrayList<Account> accountList = new ArrayList<>();
@@ -384,7 +387,6 @@ public class ContestInstance {
 
         // each iteration of loop choose a character randomly from the given ASCII range
         // and append it to StringBuilder instance
-
         for (int i = 0; i < length; i++) {
             int randomIndex = random.nextInt(chars.length());
             sb.append(chars.charAt(randomIndex));
@@ -412,10 +414,12 @@ public class ContestInstance {
 
     private String[] loadFile(String filename) throws IOException {
         Vector<String> lines = new Vector<>();
-        if (filename == null)
+        if (filename == null) {
             throw new IllegalArgumentException("filename is null");
-        if (!(new File(filename)).exists())
+        }
+        if (!(new File(filename)).exists()) {
             return new String[0];
+        }
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(new FileInputStream(filename), StandardCharsets.UTF_8));
         String line = in.readLine();
@@ -425,11 +429,13 @@ public class ContestInstance {
         }
         in.close();
         in = null;
-        if (lines.size() == 0)
+        if (lines.size() == 0) {
             return new String[0];
+        }
         String[] out = new String[lines.size()];
-        for (int i = 0; i < lines.size(); i++)
+        for (int i = 0; i < lines.size(); i++) {
             out[i] = lines.elementAt(i);
+        }
         return out;
     }
 

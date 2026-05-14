@@ -1,9 +1,9 @@
-package com.lingfeishengtian.cli;
+package com.procurial.cli;
 
-import com.lingfeishengtian.core.ContestInstance;
-import com.lingfeishengtian.core.DefaultProblem;
-import com.lingfeishengtian.utils.Cleaner;
-import com.lingfeishengtian.ziputils.ZipCreator;
+import com.procurial.core.ContestInstance;
+import com.procurial.core.DefaultProblem;
+import com.procurial.utils.Cleaner;
+import com.procurial.ziputils.ZipCreator;
 import edu.csus.ecs.pc2.core.model.ClientType;
 import edu.csus.ecs.pc2.core.security.FileSecurityException;
 

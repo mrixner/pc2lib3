@@ -1,4 +1,4 @@
-package com.lingfeishengtian.core;
+package com.procurial.core;
 
 public class ProblemException extends Exception{
     String exceptionMessage;
