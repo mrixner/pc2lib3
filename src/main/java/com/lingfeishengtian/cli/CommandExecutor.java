@@ -47,6 +47,7 @@ public class CommandExecutor {
         }
     }
 
+    // If you modify these commands, also modify the completer properties in CLIStarter.java
     public void execute(String[] args, boolean fromFile) throws FileSecurityException {
         String command = args[0];
         if (command.startsWith("#")) return;
