@@ -32,7 +32,7 @@ public class CLIStarter {
             Completer fileCompleter = new Completers.FilesCompleter(Paths.get(""));
             Completer dirCompleter = new Completers.DirectoriesCompleter(Paths.get(""));
             Completer aggregateCompleter = new AggregateCompleter(
-                new StringsCompleter("help", "exit", "clean", "save", "autoJudge", "setDefaultTime", "setDefaultScore", "setDefaultContest"),
+                new StringsCompleter("help", "exit", "clean", "save", "autoJudge", "setDefaultTime", "setDefaultScore", "setDefaultContest", "setupWti"),
                 new ArgumentCompleter(new StringsCompleter("run"), fileCompleter),
                 new ArgumentCompleter(new StringsCompleter("load"), fileCompleter),
                 new ArgumentCompleter(new StringsCompleter("new"), dirCompleter),

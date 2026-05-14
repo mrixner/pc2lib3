@@ -18,6 +18,42 @@ public class ZipCreator {
         }
     }
 
+    public static void unzipFileTo(String zip, String fileLoc) throws IOException {
+        File destination = new File(fileLoc);
+        if (destination.isDirectory()) {
+            String destDirectory = destination.getAbsolutePath();
+            File destDir = new File(destDirectory);
+            if (!destDir.exists()) {
+                destDir.mkdir();
+            }
+            System.out.println("P"+zip);
+            ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zip));
+            ZipEntry entry = zipIn.getNextEntry();
+            while (entry != null) {
+                String filePath = destDirectory + File.separator + entry.getName();
+                if (!filePath.contains("__MACOSX")) {
+                    if (!entry.isDirectory()) {
+                        File filePathFile = new File(filePath);
+                        File parent = new File(filePathFile.getParent());
+                        parent.mkdirs();
+                        extractFile(zipIn, filePath);
+                        if (filePathFile.getName().toLowerCase().startsWith("pc2") && !filePathFile.getName().contains(".")) {
+                            filePathFile.setExecutable(true);
+                        }
+                    } else {
+                        File dir = new File(filePath);
+                        dir.mkdirs();
+                    }
+                }
+                zipIn.closeEntry();
+                entry = zipIn.getNextEntry();
+            }
+            zipIn.close();
+        } else {
+            System.out.println("Path provided is not a directory and cannot be unzipped to.");
+        }
+    }
+
     private static void unzip(String zipFilePath, String destDirectory) throws IOException {
         File destDir = new File(destDirectory);
         if (!destDir.exists()) {

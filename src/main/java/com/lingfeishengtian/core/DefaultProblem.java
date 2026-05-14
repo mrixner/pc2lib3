@@ -130,6 +130,7 @@ public class DefaultProblem {
 
     public void copyDataFilesToDir(String dir) {
         for (SerializedFile file : inSerializedFiles) {
+            if (file == null) continue;
             try {
                 FileUtils.copyFile(file.getFile(), new File(dir + File.separator + file.getName()));
             } catch (IOException e) {
