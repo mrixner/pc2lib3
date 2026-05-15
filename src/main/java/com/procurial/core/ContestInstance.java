@@ -216,12 +216,16 @@ public class ContestInstance {
         }
     }
 
+    public void addGroup(Group group) {
+        contest.addGroup(group);
+    }
+
     private Vector<Account> getAccountsOfType(ClientType.Type type) {
         return contest.getAccounts(type);
     }
 
-    public void bulkAddProblems(File inoutdir) {
-        bulkAddProblems(inoutdir, null);
+    public void bulkAddProblems(Group group, File inoutdir) {
+        bulkAddProblems(group, inoutdir, null);
     }
 
     public String parseName(String name) {
@@ -252,11 +256,14 @@ public class ContestInstance {
         return f.isDirectory() ? f.getName() : f.getName().substring(0, f.getName().lastIndexOf("."));
     }
 
-    public void bulkAddProblems(File testCases, File problemList) {
+    public void bulkAddProblems(Group group, File testCases, File problemList) {
         if (problemList == null) {
             System.out.println("No problem list.");
             return;
         }
+        if (group != null)
+            System.out.println("Adding problems to group " + group.getDisplayName());
+
         try {
             Scanner scan = new Scanner(problemList);
 
@@ -311,7 +318,7 @@ public class ContestInstance {
                     }
 
                     try {
-                        problem = new DefaultProblem(name, testCaseName, ins, outs);
+                        problem = new DefaultProblem(group, name, testCaseName, ins, outs);
                         addProblem(problem);
                     } catch (NullPointerException e) {
                         e.printStackTrace();

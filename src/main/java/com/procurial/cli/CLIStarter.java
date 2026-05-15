@@ -35,7 +35,7 @@ public class CLIStarter {
                 new ArgumentCompleter(new StringsCompleter("run"), fileCompleter),
                 new ArgumentCompleter(new StringsCompleter("load"), fileCompleter),
                 new ArgumentCompleter(new StringsCompleter("new"), dirCompleter),
-                new ArgumentCompleter(new StringsCompleter("add"), new StringsCompleter("account", "problem"), dirCompleter, fileCompleter),
+                new ArgumentCompleter(new StringsCompleter("add"), new StringsCompleter("account", "problem", "group"), null, dirCompleter, fileCompleter),
                 new ArgumentCompleter(new StringsCompleter("setNewPasscodes"), fileCompleter),
                 new ArgumentCompleter(new StringsCompleter("setupWti"), dirCompleter),
                 new ArgumentCompleter(new StringsCompleter("sampleData"), dirCompleter, dirCompleter)

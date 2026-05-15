@@ -9,16 +9,20 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.procurial.core.ContestInstance;
 import com.procurial.utils.Cleaner;
 import com.procurial.ziputils.ZipCreator;
 
 import edu.csus.ecs.pc2.core.model.ClientType;
+import edu.csus.ecs.pc2.core.model.Group;
 import edu.csus.ecs.pc2.core.security.FileSecurityException;
 
 public class CommandExecutor {
     ContestInstance contest;
+    static Map<String, Group> groups = new HashMap<>();
 
     public static void addProperty(ContestInstance contest, String[] args) {
         String property = args[1];
@@ -29,12 +33,30 @@ public class CommandExecutor {
             } catch (Exception e) {
                 System.out.println("Argument entered <type> is not valid.");
             }
+        } else if (property.equals("group")) {
+            try {
+                String name = args[2];
+                if (name.equals("")) throw new IllegalArgumentException("Name is empty");
+                Group grp = new Group(name);
+                grp.setDisplayOnScoreboard(true);
+                groups.put(name, grp);
+                contest.addGroup(grp);
+            } catch (Exception e) {
+                System.out.println("Argument entered <type> is not valid.");
+            }
         } else if (property.equals("problem")) {
-            // if (args.length == 5) {
-            //     String dispName = args[2];
-            //     File inFolder = new File(args[3]);
-            //     if (args[3].equals("null")) inFolder = null;
-            //     File outFolder = new File(args[4]);
+            String groupName = args[2];
+            Group group = null;
+            if (groups.containsKey(groupName))
+                group = groups.get(groupName);
+            if (groupName.equals("all"))
+                group = null;
+
+            // if (args.length == 6) {
+            //     String dispName = args[3];
+            //     File inFolder = new File(args[4]);
+            //     if (args[4].equals("null")) inFolder = null;
+            //     File outFolder = new File(args[5]);
             //     try {
             //         contest.addProblem(new DefaultProblem(dispName, ));
             //     } catch (Exception e) {
@@ -42,10 +64,10 @@ public class CommandExecutor {
             //     }
             // } 
             // else 
-            if (args.length == 4) {
-                contest.bulkAddProblems(new File(args[2]), new File(args[3]));
-            } else if (args.length == 3) {
-                contest.bulkAddProblems(new File(args[2]));
+            if (args.length == 5) {
+                contest.bulkAddProblems(group, new File(args[3]), new File(args[4]));
+            } else if (args.length == 4) {
+                contest.bulkAddProblems(group, new File(args[3]));
             } 
             else {
                 System.out.println("Too many or not enough arguments.");
@@ -69,13 +91,15 @@ public class CommandExecutor {
             System.out.println("add <property> {arguments} : Adds different stuff to the competition.");
             System.out.println("setupWti <contest directory> <scoreboard1 account password> : sets up the wti system");
             System.out.println("sampleData <contest directory> <sampledata folder> : copies the sample data into a hostable zip");
-            System.out.println("properties: account, problem");
+            System.out.println("properties: account, problem, group");
             System.out.println("\taccount arguments -> <type>");
             System.out.println("\t\taccount types: JUDGE, ADMINISTRATOR, TEAM, SCOREBOARD");
-            System.out.println("\tproblem arguments option 1 -> <display name> <data file in path> <data file out path>");
-            System.out.println("\tproblem arguments option 2 -> <in out files folder directory> <problem list>");
-            System.out.println("\tproblem arguments option 3 -> <in out files folder directory>");
+            System.out.println("\tproblem arguments option 1 -> <group name> <display name> <data file in path> <data file out path>");
+            System.out.println("\tproblem arguments option 2 -> <group name> <in out files folder directory> <problem list>");
+            System.out.println("\tproblem arguments option 3 -> <group name> <in out files folder directory>");
             System.out.println("\tMore info: In out file directory should only contain files with either .dat, .in, or .out extensions. The problem list is optional, but allows you to put problems in order.");
+            System.out.println("\tgroup arguments -> <name>");
+            System.out.println("\t\tDo not use a group name of 'all' as that is the group passed to 'add problem' for an ungrouped problem set.");
             System.out.println("autoJudge: gives judges autojudge ability for all problems");
             System.out.println("setDefaultTime: sets contest to 2 hours.");
             System.out.println("setDefaultScore : sets scores");

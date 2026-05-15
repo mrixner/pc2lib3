@@ -5,10 +5,11 @@ import java.io.IOException;
 
 import com.procurial.utils.FileUtils;
 
+import edu.csus.ecs.pc2.core.model.Group;
 import edu.csus.ecs.pc2.core.model.Problem;
+import edu.csus.ecs.pc2.core.model.Problem.INPUT_VALIDATOR_TYPE;
 import edu.csus.ecs.pc2.core.model.ProblemDataFiles;
 import edu.csus.ecs.pc2.core.model.SerializedFile;
-import edu.csus.ecs.pc2.core.model.Problem.INPUT_VALIDATOR_TYPE;
 import edu.csus.ecs.pc2.validator.pc2Validator.PC2ValidatorSettings;
 
 public class DefaultProblem {
@@ -30,7 +31,7 @@ public class DefaultProblem {
         return true;
     }
 
-    public DefaultProblem(String name, String testCaseName, SerializedFile[] serializedIn,
+    public DefaultProblem(Group group, String name, String testCaseName, SerializedFile[] serializedIn,
             SerializedFile[] serializedOut) throws ProblemException {
         this.inSerializedFiles = serializedIn;
         this.outSerializedFiles = serializedOut;
@@ -70,12 +71,15 @@ public class DefaultProblem {
         problem.setShowValidationToJudges(true);
         problem.setManualReview(true);
         problem.setShortName(testCaseName);
+        if (group != null) {
+            problem.addGroup(group);
+        }
         setDataFiles();
     }
 
-    public DefaultProblem(String name, SerializedFile[] serializedIn, SerializedFile[] serializedOut)
+    public DefaultProblem(Group group, String name, SerializedFile[] serializedIn, SerializedFile[] serializedOut)
             throws ProblemException {
-        this(name, name.replaceAll("[^a-zA-Z]+", "").replaceAll(" ", "").toLowerCase(), serializedIn, serializedOut);
+        this(group, name, name.replaceAll("[^a-zA-Z]+", "").replaceAll(" ", "").toLowerCase(), serializedIn, serializedOut);
     }
 
     private boolean hasInputCases() {
